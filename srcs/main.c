@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 17:06:28 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/08 21:44:09 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/09 04:26:12 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ char map[HEIGHT + 1][WIDTH + 1] =  {"11111111111111111111",
 									"11111111111111111111"};
 
 int
+	key_hook(int keycode, void *ptr)
+{
+	*((int *)ptr) = keycode;
+	printf("the pressed key is : %d\n", keycode);
+	return (0);
+}
+
+int
+	loop_hook(void *ptr)
+{
+	printf("%d\n", *((int *)ptr));
+}
+
+int
 	main(int ac, char **av)
 {
 	void	*mlx_ptr;
@@ -38,6 +52,7 @@ int
 	void	*coll_img;
 	int		x;
 	int		y;
+	int		key;
 
 	mlx_ptr = mlx_init();
 	if (!mlx_ptr)
@@ -54,17 +69,20 @@ int
 		i = 0;
 		while (i < WIDTH)
 		{
-			mlx_put_image_to_window(mlx_ptr, win_ptr, bg_img, i * 64, j * 64);
 			if (map[j][i] == '1')
 				mlx_put_image_to_window(mlx_ptr, win_ptr, bloc_img, i * 64, j * 64);
 			else if (map[j][i] == 'P')
 				mlx_put_image_to_window(mlx_ptr, win_ptr, player_img, i * 64, j * 64);
 			else if (map[j][i] == 'C')
 				mlx_put_image_to_window(mlx_ptr, win_ptr, coll_img, i * 64, j * 64);
+			else
+				mlx_put_image_to_window(mlx_ptr, win_ptr, bg_img, i * 64, j * 64);
 			i++;
 		}
 		j++;
 	}
+	mlx_key_hook(mlx_ptr, key_hook, &key);
+	mlx_loop_hook(mlx_ptr, loop_hook, &key);
 	mlx_loop(mlx_ptr);
 	return (0);
 }
