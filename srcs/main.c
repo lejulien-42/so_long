@@ -6,11 +6,12 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 17:06:28 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/09 04:26:12 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/09 17:08:05 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mlx/mlx.h"
+#include "so_long.h"
 #include <stdio.h>
 #define WIDTH 20
 #define HEIGHT 10
@@ -28,40 +29,69 @@ char map[HEIGHT + 1][WIDTH + 1] =  {"11111111111111111111",
 									"11111111111111111111"};
 
 int
-	key_hook(int keycode, void *ptr)
+	load_mlx(t_mlx *mlx, int width, int height)
 {
-	*((int *)ptr) = keycode;
-	printf("the pressed key is : %d\n", keycode);
+	
+	mlx->mlx_ptr = mlx_init();
+	if (!mlx->mlx_ptr)
+		return (1);
+	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, width*64, height*64, "so_long");
+	if (!mlx->win_ptr)
+		return (1);
 	return (0);
 }
 
-int
-	loop_hook(void *ptr)
+void
+	init_game(t_game *game, t_mlx *mlx)
 {
-	printf("%d\n", *((int *)ptr));
+	game->mlx = mlx;
+	game->tilesizeX = 64;
+	game->tilesizeY = 64;
+	game->bg_img = NULL;
+	game->player_img = NULL;
+	game->bloc_img = NULL;
+	game->coll_img = NULL;
+}
+
+int
+	load_img(t_game *game)
+{
+	game->bg_img = mlx_xpm_file_to_image(game->mlx->mlx_ptr,
+										"./sprite/aqua.xpm",
+										&game->tilesizeX,
+										&game->tilesizeY);
+	game->player_img = mlx_xpm_file_to_image(game->mlx->mlx_ptr,
+										"./sprite/dolphin.xpm",
+										&game->tilesizeX,
+										&game->tilesizeY);
+	game->bloc_img = mlx_xpm_file_to_image(game->mlx->mlx_ptr,
+										"./sprite/bloc.xpm",
+										&game->tilesizeX,
+										&game->tilesizeY);
+	game->coll_img = mlx_xpm_file_to_image(game->mlx->mlx_ptr,
+										"./sprite/soda.xpm",
+										&game->tilesizeX,
+										&game->tilesizeY);
+	if (!game->bg_img || !game->player_img || !game->bloc_img ||
+										!game->coll_img)
+		return (0);
+	return (0);
 }
 
 int
 	main(int ac, char **av)
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-	void	*bg_img;
-	void	*bloc_img;
-	void	*player_img;
-	void	*coll_img;
-	int		x;
-	int		y;
-	int		key;
+	t_mlx	*mlx;
+	t_game	*game;
 
-	mlx_ptr = mlx_init();
-	if (!mlx_ptr)
+	mlx = malloc(sizeof(t_mlx));
+	game = malloc(sizeof(t_game));
+	if (load_mlx(mlx, WIDTH, HEIGHT))
 		return (1);
-	bg_img = mlx_xpm_file_to_image(mlx_ptr, "./sprites/aqua.xpm", &x, &y);
-	player_img = mlx_xpm_file_to_image(mlx_ptr, "./sprites/dolphin.xpm", &x, &y);
-	bloc_img = mlx_xpm_file_to_image(mlx_ptr, "./sprites/bloc.xpm", &x, &y);
-	coll_img = mlx_xpm_file_to_image(mlx_ptr, "./sprites/soda.xpm", &x, &y);
-	win_ptr = mlx_new_window(mlx_ptr, WIDTH * 64, HEIGHT * 64, "so_long");
+	init_game(game, mlx);
+	if (load_img(game))
+		return (1);
+	/*
 	int i = 0;
 	int j = 0;
 	while (j < HEIGHT)
@@ -69,20 +99,20 @@ int
 		i = 0;
 		while (i < WIDTH)
 		{
+	printf("segfault\n");
 			if (map[j][i] == '1')
-				mlx_put_image_to_window(mlx_ptr, win_ptr, bloc_img, i * 64, j * 64);
+				mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, game->bloc_img, i * 64, j * 64);
 			else if (map[j][i] == 'P')
-				mlx_put_image_to_window(mlx_ptr, win_ptr, player_img, i * 64, j * 64);
+				mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, game->player_img, i * 64, j * 64);
 			else if (map[j][i] == 'C')
-				mlx_put_image_to_window(mlx_ptr, win_ptr, coll_img, i * 64, j * 64);
+				mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, game->coll_img, i * 64, j * 64);
 			else
-				mlx_put_image_to_window(mlx_ptr, win_ptr, bg_img, i * 64, j * 64);
+				mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, game->bg_img, i * 64, j * 64);
 			i++;
 		}
 		j++;
-	}
-	mlx_key_hook(mlx_ptr, key_hook, &key);
-	mlx_loop_hook(mlx_ptr, loop_hook, &key);
-	mlx_loop(mlx_ptr);
+	}*/
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, game->bloc_img, 64, 64);
+	mlx_loop(mlx->mlx_ptr);
 	return (0);
 }
