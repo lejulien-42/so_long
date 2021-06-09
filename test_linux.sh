@@ -1,1 +1,1 @@
-clang ./srcs/main.c ./mlx/libmlx.a -lXext -lX11
+clang ./srcs/*.c ./mlx/libmlx.a -lXext -lX11 -fsanitize=address -g3
