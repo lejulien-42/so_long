@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 16:28:51 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/10 01:44:39 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/10 02:48:52 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ typedef	struct	s_mlx
 	void		*win_ptr;
 }				t_mlx;
 
+typedef struct	s_vec2
+{
+	int			x;
+	int			y;
+}				t_vec2;
 
 typedef struct	s_img_d
 {
@@ -56,5 +61,7 @@ typedef struct	s_game
 }				t_game;
 
 int		game_loop(t_game *game);
-void	put_image(void *img, t_game *game, int x, int y);
+t_vec2	set_pos(int x, int y);
+void	put_image(t_game *g, t_img_d *to_place, t_vec2 pos);
+
 #endif
