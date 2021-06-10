@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 17:06:28 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/09 19:34:34 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/10 01:59:19 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,37 @@ void
 	game->winY = tileY * 64;
 }
 
+t_img_d
+	*create_and_get_date(t_game *g, t_img *img, char *path)
+{
+	t_img_d	*ret;
+
+	ret = malloc(sizeof(t_img_d));
+	if (!ret)
+		return (NULL);
+	if (!path)
+		ret->img_ptr = mlx_new_image(g->mlx->mlx_ptr, g->winX, g->winY);
+	else
+		ret->img_ptr = mlx_xpm_file_to_image(g->mlx->mlx_ptr, path, &ret->width,
+											&ret->height);
+	if (!ret->img_ptr)
+		return (NULL);
+	ret->data = (int *)mlx_get_data_addr(ret->img_ptr, &ret->bpp, &ret->size_l,
+										&ret->endian);
+	return (ret);
+}
+
 int
 	load_img(t_game *g, t_img *img)
 {
-	int w;
-	int h;
-
-	g->canvas = mlx_new_image(g->mlx->mlx_ptr, g->winX, g->winY);
-	img->bg_img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
-										"./sprites/aqua.xpm", &w, &h);
-	img->player_img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
-										"./sprites/dolphin.xpm", &w, &h);
-	img->bloc_img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
-										"./sprites/bloc.xpm", &w, &h);
-	img->coll_img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
-										"./sprites/soda.xpm", &w, &h);
-	img->mouse_img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
-										"./sprites/cursor.xpm", &w, &h);
+	img->canvas = create_and_get_date(g, img, NULL);
+	img->bg_img = create_and_get_date(g, img, "./sprites/aqua.xpm");
+	img->player_img = create_and_get_date(g, img, "./sprites/dolphin.xpm");
+	img->bloc_img = create_and_get_date(g, img, "./sprites/bloc.xpm");
+	img->coll_img = create_and_get_date(g, img, "./sprites/soda.xpm");
+	img->mouse_img = create_and_get_date(g, img, "./sprites/cursor.xpm");
 	if (!img->bg_img || !img->player_img || !img->bloc_img || !img->coll_img ||
-		!img->mouse_img)
+		!img->mouse_img || !img->canvas)
 		return (1);
 	g->img = img;
 	return (0);
@@ -75,7 +87,6 @@ int
 	init_game(&game, &mlx, 16, 16);
 	if (load_mlx(&mlx, 16, 16) || load_img(&game, &img))
 		return (1);
-	put_image(game.canvas, &game, 5, 5);
 	mlx_mouse_hide(mlx.mlx_ptr, mlx.win_ptr);
 	mlx_hook(mlx.win_ptr, 17, 0L, close, &game);
 	mlx_loop_hook(mlx.mlx_ptr, game_loop, &game);

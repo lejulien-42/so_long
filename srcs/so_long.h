@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 16:28:51 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/09 19:42:42 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/10 01:44:39 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ typedef	struct	s_mlx
 	void		*win_ptr;
 }				t_mlx;
 
-typedef struct	s_img
+
+typedef struct	s_img_d
 {
 	void		*img_ptr;
 	int			*data;
@@ -31,22 +32,23 @@ typedef struct	s_img
 	int			endian;
 	int			width;
 	int			height;
-}
+}				t_img_d;
+
 
 typedef struct	s_img
 {
-	void		*bg_img;
-	void		*player_img;
-	void		*bloc_img;
-	void		*coll_img;
-	void		*mouse_img;
+	t_img_d		*bg_img;
+	t_img_d		*player_img;
+	t_img_d		*bloc_img;
+	t_img_d		*coll_img;
+	t_img_d		*canvas;
+	t_img_d		*mouse_img;
 }				t_img;
 
 typedef struct	s_game
 {
 	t_mlx		*mlx;
 	t_img		*img;
-	void		*canvas;
 	int			mapX;
 	int			mapY;
 	int			winX;

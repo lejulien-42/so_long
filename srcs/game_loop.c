@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 18:20:48 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/09 19:24:11 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/10 02:07:17 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ int
 {
 	render_mouse(game);
 	mlx_put_image_to_window(game->mlx->mlx_ptr, game->mlx->win_ptr,
-							game->canvas, 0, 0);
+							game->img->canvas->img_ptr, 0, 0);
 	return (0);
 }
