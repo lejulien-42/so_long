@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 16:28:51 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/10 02:48:52 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/10 18:36:20 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct	s_img
 	t_img_d		*bloc_img;
 	t_img_d		*coll_img;
 	t_img_d		*canvas;
+	t_img_d		*portal_img;
 	t_img_d		*mouse_img;
 }				t_img;
 
@@ -54,6 +55,7 @@ typedef struct	s_game
 {
 	t_mlx		*mlx;
 	t_img		*img;
+	char		*map;
 	int			mapX;
 	int			mapY;
 	int			winX;
@@ -63,5 +65,6 @@ typedef struct	s_game
 int		game_loop(t_game *game);
 t_vec2	set_pos(int x, int y);
 void	put_image(t_game *g, t_img_d *to_place, t_vec2 pos);
-
+int		ft_put_error(void);
+void	ft_getmap(t_game *game, char *path);
 #endif

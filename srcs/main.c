@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 17:06:28 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/10 01:59:19 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/10 18:57:02 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ int
 	img->bloc_img = create_and_get_date(g, img, "./sprites/bloc.xpm");
 	img->coll_img = create_and_get_date(g, img, "./sprites/soda.xpm");
 	img->mouse_img = create_and_get_date(g, img, "./sprites/cursor.xpm");
+	img->portal_img = create_and_get_date(g, img, "./sprites/portal.xpm");
 	if (!img->bg_img || !img->player_img || !img->bloc_img || !img->coll_img ||
-		!img->mouse_img || !img->canvas)
+		!img->mouse_img || !img->canvas || !img->portal_img)
 		return (1);
 	g->img = img;
 	return (0);
@@ -83,13 +84,24 @@ int
 	t_mlx	mlx;
 	t_game	game;
 	t_img	img;
+	t_vec2	mapSize;
 
-	init_game(&game, &mlx, 16, 16);
-	if (load_mlx(&mlx, 16, 16) || load_img(&game, &img))
-		return (1);
-	mlx_mouse_hide(mlx.mlx_ptr, mlx.win_ptr);
-	mlx_hook(mlx.win_ptr, 17, 0L, close, &game);
-	mlx_loop_hook(mlx.mlx_ptr, game_loop, &game);
-	mlx_loop(mlx.mlx_ptr);
-	return (0);
+	if (ac == 2)
+	{
+		ft_getmap(&game, av[1]);
+		if (game.map == NULL)
+			return (ft_put_error());
+		if (mapSize.x == -1 && mapSize.y == -1)
+			return (ft_put_error());
+		init_game(&game, &mlx, game.mapX, game.mapY);
+		if (load_mlx(&mlx, game.mapX, game.mapY) || load_img(&game, &img))
+			return (ft_put_error());
+		mlx_mouse_hide(mlx.mlx_ptr, mlx.win_ptr);
+		mlx_hook(mlx.win_ptr, 17, 0L, close, &game);
+		mlx_loop_hook(mlx.mlx_ptr, game_loop, &game);
+		mlx_do_sync(mlx.mlx_ptr);
+		mlx_loop(mlx.mlx_ptr);
+		return (0);
+	}
+	return (ft_put_error());
 }
