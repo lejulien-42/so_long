@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 17:06:28 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/10 18:57:02 by user42           ###   ########.fr       */
+/*   Updated: 2021/06/11 18:27:01 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,15 @@ int
 		ft_getmap(&game, av[1]);
 		if (game.map == NULL)
 			return (ft_put_error());
-		if (mapSize.x == -1 && mapSize.y == -1)
+		if (mapSize.x == -1)
 			return (ft_put_error());
+		get_player_pos(&game);
 		init_game(&game, &mlx, game.mapX, game.mapY);
 		if (load_mlx(&mlx, game.mapX, game.mapY) || load_img(&game, &img))
 			return (ft_put_error());
 		mlx_mouse_hide(mlx.mlx_ptr, mlx.win_ptr);
+		mlx_hook(mlx.win_ptr, 02, (1L<<0), key_pressed, &game);
+		mlx_hook(mlx.win_ptr, 03, (1L<<1), key_released, &game);
 		mlx_hook(mlx.win_ptr, 17, 0L, close, &game);
 		mlx_loop_hook(mlx.mlx_ptr, game_loop, &game);
 		mlx_do_sync(mlx.mlx_ptr);

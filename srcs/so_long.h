@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 16:28:51 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/10 18:36:20 by user42           ###   ########.fr       */
+/*   Updated: 2021/06/11 19:39:56 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct	s_img_d
 	int			height;
 }				t_img_d;
 
-
 typedef struct	s_img
 {
 	t_img_d		*bg_img;
@@ -56,10 +55,15 @@ typedef struct	s_game
 	t_mlx		*mlx;
 	t_img		*img;
 	char		*map;
+	t_vec2		player_pos;
 	int			mapX;
 	int			mapY;
 	int			winX;
 	int			winY;
+	int			key_w;
+	int			key_a;
+	int			key_s;
+	int			key_d;
 }				t_game;
 
 int		game_loop(t_game *game);
@@ -67,4 +71,7 @@ t_vec2	set_pos(int x, int y);
 void	put_image(t_game *g, t_img_d *to_place, t_vec2 pos);
 int		ft_put_error(void);
 void	ft_getmap(t_game *game, char *path);
+void	get_player_pos(t_game *game);
+int		key_pressed(int keycode, t_game *game);
+int		key_released(int keycode, t_game *game);
 #endif
