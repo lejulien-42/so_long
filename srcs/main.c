@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 17:06:28 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/11 18:27:01 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/11 20:37:36 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void
 	game->mlx = mlx;
 	game->winX = tileX * 64;
 	game->winY = tileY * 64;
+	game->coll = 0;
 }
 
 t_img_d
@@ -70,6 +71,27 @@ int
 	return (0);
 }
 
+void
+	load_coll(t_game *game)
+{
+	int	x;
+	int	y;
+	int	count;
+
+	y = -1;
+	count = 0;
+	while (y++ < game->mapY - 1)
+	{
+		x = -1;
+		while (x++ < game->mapX - 1)
+		{
+			if (game->map[y * game->mapX + x] == 'C')
+				count++;
+		}
+	}
+	game->t_coll = count;
+}
+
 int
 	close(int keycode, t_game *game)
 {
@@ -94,6 +116,7 @@ int
 		if (mapSize.x == -1)
 			return (ft_put_error());
 		get_player_pos(&game);
+		load_coll(&game);
 		init_game(&game, &mlx, game.mapX, game.mapY);
 		if (load_mlx(&mlx, game.mapX, game.mapY) || load_img(&game, &img))
 			return (ft_put_error());

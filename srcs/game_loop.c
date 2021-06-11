@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 18:20:48 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/11 19:33:19 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/11 20:48:35 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ void
 	{
 		game->player_pos.x++;
 		game->key_d= 0;
+	}
+}
+
+void
+	get_can(t_game *game)
+{
+	if (game->map[game->player_pos.y * game->mapX + game->player_pos.x] == 'C')
+	{
+		game->coll++;
+		game->map[game->player_pos.y * game->mapX + game->player_pos.x] = '0';
 	}
 }
 
@@ -82,6 +92,7 @@ int
 	game_loop(t_game *game)
 {
 	handle_moves(game);
+	get_can(game);
 	draw_map(game);
 	render_mouse(game);
 	mlx_put_image_to_window(game->mlx->mlx_ptr, game->mlx->win_ptr,

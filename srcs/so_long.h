@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 16:28:51 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/11 19:39:56 by lejulien         ###   ########.fr       */
+/*   Updated: 2021/06/11 20:32:19 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef struct	s_game
 	t_img		*img;
 	char		*map;
 	t_vec2		player_pos;
+	int			coll;
+	int			t_coll;
 	int			mapX;
 	int			mapY;
 	int			winX;
