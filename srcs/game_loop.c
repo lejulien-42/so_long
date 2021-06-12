@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 18:20:48 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/11 20:48:35 by user42           ###   ########.fr       */
+/*   Updated: 2021/06/12 04:03:37 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,36 @@ void
 	{
 		game->player_pos.y--;
 		game->key_w = 0;
+		game->moves++;
+		if (game->moves > 0)
+			printf("%d moves\n", game->moves);
 	}
 	if (game->key_a && game->player_pos.x != 0 &&
 		game->map[game->player_pos.y * game->mapX + (game->player_pos.x - 1)] != '1')
 	{
 		game->player_pos.x--;
 		game->key_a = 0;
+		game->moves++;
+		if (game->moves > 0)
+			printf("%d moves\n", game->moves);
 	}
 	if (game->key_s && game->player_pos.y != game->mapY &&
 		game->map[(game->player_pos.y + 1) * game->mapX + game->player_pos.x] != '1')
 	{
 		game->player_pos.y++;
 		game->key_s = 0;
+		game->moves++;
+		if (game->moves > 0)
+			printf("%d moves\n", game->moves);
 	}
 	if (game->key_d && game->player_pos.x != game->mapX &&
 		game->map[game->player_pos.y * game->mapX + (game->player_pos.x + 1)] != '1')
 	{
 		game->player_pos.x++;
 		game->key_d= 0;
+		game->moves++;
+		if (game->moves > 0)
+			printf("%d moves\n", game->moves);
 	}
 }
 
@@ -88,11 +100,22 @@ void
 		put_image(game, game->img->mouse_img, set_pos(x, y));
 }
 
+void
+	ft_exit(t_game *game)
+{
+	if (game->map[game->player_pos.y * game->mapX + game->player_pos.x] == 'E')
+	{
+		if (game->coll == game->t_coll)
+			exit(0);
+	}
+}
+
 int
 	game_loop(t_game *game)
 {
 	handle_moves(game);
 	get_can(game);
+	ft_exit(game);
 	draw_map(game);
 	render_mouse(game);
 	mlx_put_image_to_window(game->mlx->mlx_ptr, game->mlx->win_ptr,

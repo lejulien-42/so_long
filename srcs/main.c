@@ -6,7 +6,7 @@
 /*   By: lejulien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 17:06:28 by lejulien          #+#    #+#             */
-/*   Updated: 2021/06/11 20:37:36 by user42           ###   ########.fr       */
+/*   Updated: 2021/06/12 04:02:57 by lejulien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void
 	game->winX = tileX * 64;
 	game->winY = tileY * 64;
 	game->coll = 0;
+	game->moves = -4;
 }
 
 t_img_d
@@ -121,11 +122,10 @@ int
 		if (load_mlx(&mlx, game.mapX, game.mapY) || load_img(&game, &img))
 			return (ft_put_error());
 		mlx_mouse_hide(mlx.mlx_ptr, mlx.win_ptr);
-		mlx_hook(mlx.win_ptr, 02, (1L<<0), key_pressed, &game);
-		mlx_hook(mlx.win_ptr, 03, (1L<<1), key_released, &game);
 		mlx_hook(mlx.win_ptr, 17, 0L, close, &game);
 		mlx_loop_hook(mlx.mlx_ptr, game_loop, &game);
-		mlx_do_sync(mlx.mlx_ptr);
+		mlx_hook(mlx.win_ptr, 02, (1L<<0), key_pressed, &game);
+		mlx_hook(mlx.win_ptr, 03, (1L<<1), key_released, &game);
 		mlx_loop(mlx.mlx_ptr);
 		return (0);
 	}
